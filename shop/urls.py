@@ -1,9 +1,9 @@
 
 from django.urls import path,include
-from .views import helloworld
+from .views import index
 
 
 urlpatterns = [
 
-    path('', helloworld),
+    path('', index),
 ]
