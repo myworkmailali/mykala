@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
 import datetime
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -19,6 +20,9 @@ class Product(models.Model):
     price = models.DecimalField(decimal_places=0, max_digits=10,default=0)
     description = models.CharField(max_length=500,default='', blank=True,null=True)
     picture=models.ImageField(upload_to='upload/product')
+    is_sale=models.BooleanField(default=False)
+    seal_price=models.DecimalField(decimal_places=0, max_digits=10,default=0)
+    star=models.IntegerField(default=0,validators=[MinValueValidator(0),MaxValueValidator(5)])
 
 #    SIZE_CHOICES = (
 #        ('m', '32'),
