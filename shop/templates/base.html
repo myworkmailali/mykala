@@ -17,7 +17,20 @@
     </head>
       {% include 'navbar.html' %}
     <body dir="rtl">
+       {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-info" role="alert">
+                  {{ message }}
+                </div>
+
+
+            {% endfor %}
+       {% endif %}
     {% block content %}
+
+
+
+
     {% endblock %}
 
         <!-- Footer-->
