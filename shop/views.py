@@ -3,7 +3,7 @@ from pyexpat.errors import messages
 from django.shortcuts import render,redirect
 
 from .forms import SignupForm
-from .models import Product
+from .models import Product, Category
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 
@@ -65,3 +65,13 @@ def signup_user(request):
 def product(request,pk):
     product = Product.objects.get(pk=pk)
     return render(request,'product.html',{'product':product})
+
+def category(request,cat):
+    cat=cat.replace('-',' ')
+    try:
+        category = Category.objects.get(name=cat)
+        products = Product.objects.filter(category=category)
+        return render(request,'category.html',{'products':products,'category':category})
+    except:
+        messages.success(request,'دسته بندی مورد نظر یافت نشد')
+        return redirect('home')
