@@ -11,6 +11,7 @@
                                  <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">خارج شوید</a></li>
 
                         {% else %}
+
                             <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">وارد شوید</a></li>
                             <li class="nav-item"><a class="nav-link" href="{% url 'signup' %}">ثبت نام</a></li>
                         {% endif %}
@@ -30,7 +31,7 @@
                         <a class="btn btn-outline-dark" href="{% url 'cart_summary' %}">
                              <i class="bi-cart-fill me-1"></i>
                             سبد خرید
-                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                            <span class="badge bg-dark text-white ms-1 rounded-pill" id="cart_quantity">{{ cart|length }}</span>
 
                         </a>
 
