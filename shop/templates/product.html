@@ -21,13 +21,40 @@
           {% else %}
         <h5 class="card-title">{{ product.price | intcomma }}</h5>
           {% endif %}
+      <br>
+      <button type="button" value="{{ product.id }}" id="add-cart" class="btn btn-secondary">اضافه به سبد خربد</button>
+          <a href="{% url 'home' %}" class="btn btn-secondary">بازگشت به صفحه اصلی</a>
+
       </div>
     </div>
 
   </div>
 </div>
     </div>
-      <a href="{% url 'home' %}">بازگشت به صفحه اصلی</a>
+
+    <script>
+    $(document).on('click','#add-cart',function (e)
+    {
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '{% url 'cart_add' %}',
+            data:{
+                product_id: $("#add-cart").val(),
+                csrfmiddlewaretoken:'{{ csrf_token }}',
+                action:'post',
+            },
+            success:function (json){
+                console.log(json)
+            },
+            error:function (xhr,errmsg,err){}
+
+        });
+
+    });
+
+    </script>
+
     <br><br><br><br>
 {% endblock %}
 
