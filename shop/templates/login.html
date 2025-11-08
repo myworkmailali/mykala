@@ -14,10 +14,10 @@
 
     <div class="container">
         <div class="row">
-
+            <center>
             <div class="col-3">
                 <br/><br/>
-                <form method="post">
+                <form method="post" action="{% url 'login' %}">
                     {% csrf_token %}
                       <div class="mb-3">
                         <input type="text" class="form-control" placeholder="نام کاربری خود را وارد کنید" name="username">
@@ -31,6 +31,7 @@
                 </form>
                 <br/><br/>
             </div>
+        </center>
         </div>
     </div>
 {% endblock %}

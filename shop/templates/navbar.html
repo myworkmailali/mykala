@@ -7,10 +7,12 @@
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'home' %}">خانه</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">درباره ما</a>
 
-                        {% if not user.is_authenticated %}
-                        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">وارد شوید</a></li>
+                        {% if user.is_authenticated %}
+                                 <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">خارج شوید</a></li>
+
                         {% else %}
-                        <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">خارج شوید</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">وارد شوید</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'signup' %}">ثبت نام</a></li>
                         {% endif %}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">فروشگاه</a>

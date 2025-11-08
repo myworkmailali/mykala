@@ -1,9 +1,18 @@
 from pyexpat.errors import messages
 
 from django.shortcuts import render,redirect
+
+from .forms import SignupForm
 from .models import Product
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
+
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+from django import forms
+
+from . import forms
+
 
 
 def index(request):
@@ -30,3 +39,23 @@ def logout_user(request):
     logout(request)
     messages.success(request,'شما با موفقیت از سامانه خارج شدید')
     return redirect('home')
+
+
+def signup_user(request):
+    form=SignupForm()
+    if request.method == "POST":
+        form=SignupForm(request.POST)
+        if form.is_valid:
+            form.save()
+            username = form.cleaned_data.get('username')
+            password1 = form.cleaned_data.get('password1')
+
+            user = authenticate(request,username=username,password=password1)
+            login(request,user)
+            messages.success(request,'اکانت شما ساخته شد')
+            return redirect('home')
+        else:
+            messages.success(request,'مشکلی در ثبت نام وجود دارد')
+            return render('signup')
+    else:
+        return render(request, 'signup.html',{'form':form})
