@@ -2,7 +2,7 @@ from pyexpat.errors import messages
 
 from django.shortcuts import render,redirect
 
-from .forms import SignupForm
+from .forms import SignupForm,ChangeProfileForm
 from .models import Product, Category
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
@@ -59,6 +59,24 @@ def signup_user(request):
             return render('signup')
     else:
         return render(request, 'signup.html',{'form':form})
+
+def update_profile(request):
+    if request.user.is_authenticated:
+        current_user=User.objects.get(id=request.user.id)
+        user_form = ChangeProfileForm(request.POST or None,instance=current_user)
+
+        if user_form.is_valid():
+            user_form.save()
+            login(request,current_user)
+            messages.success(request,'پروفایل شما ویرایش شد')
+            return redirect('home')
+        return render(request, 'update_profile.html', {'form': user_form})
+
+    else:
+        messages.success(request,'مشکلی در ویرایش پروفایل وجود دارد')
+        return redirect('home')
+
+
 
 
 
