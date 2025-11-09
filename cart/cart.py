@@ -8,12 +8,12 @@ class Cart:
             cart = self.session['session_key']={}
         self.cart = cart
 
-    def add(self, product):
+    def add(self, product,quantity):
         product_id=str(product.id)
         if product_id in self.cart:
             pass
         else:
-            self.cart[product_id]={'price':str(product.price)}
+            self.cart[product_id]=int(quantity)
         self.session.modified = True
 
     def __len__(self):
@@ -23,3 +23,7 @@ class Cart:
         product_ids=self.cart.keys()
         products=Product.objects.filter(id__in=product_ids)
         return products
+
+    def get_quantity(self):
+        quantity=self.cart
+        return quantity

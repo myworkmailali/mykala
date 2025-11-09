@@ -32,7 +32,11 @@
         <h5 class="card-title">{{ product.price | intcomma }}</h5>
           {% endif %}
       <br>
-
+        {% for key,val in quantities.items %}
+            {% if key == product.id|slugify %}
+                تعداد:{{ val }}
+            {% endif %}
+        {% endfor %}
           <a href="{% url 'home' %}" class="btn btn-secondary">بازگشت به صفحه اصلی</a>
 
       </div>
@@ -42,6 +46,7 @@
 </div>
     </div>
 {% endfor %}
+
 
 
 {% endblock %}
