@@ -32,12 +32,31 @@
         <h5 class="card-title">{{ product.price | intcomma }}</h5>
           {% endif %}
       <br>
+       <select class="form-select" id="select{{ product.id }}">
+
+          {% for key,val in quantities.items %}
+            {% if key == product.id|slugify %}
+                 <option selected>{{ val }}     </option>
+            {% endif %}
+        {% endfor %}
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+
+
+
+
+
         {% for key,val in quantities.items %}
             {% if key == product.id|slugify %}
                 تعداد:{{ val }}
             {% endif %}
         {% endfor %}
-          <a href="{% url 'home' %}" class="btn btn-secondary">بازگشت به صفحه اصلی</a>
+      <button type="button" class="btn btn-primary quntityedit" data-index="{{ product.id }}">   ویرایش  </button>
+      <a href="{% url 'home' %}" class="btn btn-secondary">بازگشت به صفحه اصلی</a>
 
       </div>
     </div>
@@ -48,5 +67,32 @@
 {% endfor %}
 
 
+
+        <script>
+    $(document).on('click','.quntityedit',function (e)
+    {
+        e.preventDefault();
+        var productid=$(this).data('index')
+        $.ajax({
+            type: 'POST',
+            url: '{% url 'cart_update' %}',
+            data:{
+                product_id: productid,
+                product_qty:$('#select'+productid+' option:selected').text(),
+                csrfmiddlewaretoken:'{{ csrf_token }}',
+                action:'post',
+            },
+            success:function (json){
+                console.log(json)
+                //document.getElementById('cart_quantity').textContent=json.qty
+                local.reload()
+            },
+            error:function (xhr,errmsg,err){}
+
+        });
+
+    });
+
+    </script>
 
 {% endblock %}

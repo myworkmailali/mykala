@@ -1,3 +1,6 @@
+from django.http import JsonResponse
+
+import cart
 from shop.models import Product
 class Cart:
     def __init__(self, request):
@@ -27,3 +30,13 @@ class Cart:
     def get_quantity(self):
         quantity=self.cart
         return quantity
+
+
+    def update(self,product,quantity):
+        product_id=str(product.id)
+        if product_id in self.cart:
+            self.cart[product_id]=int(quantity)
+            self.session.modified = True
+
+        var=self.cart
+        return var
