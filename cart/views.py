@@ -1,3 +1,4 @@
+from functools import total_ordering
 from http.client import responses
 
 from django.shortcuts import render,get_object_or_404
@@ -9,8 +10,9 @@ def cart_summary(request):
     cart=Cart(request)
     products=cart.get_products()
     quantities=cart.get_quantity()
+    total_ordering=cart.get_total()
 
-    return render(request,'cart_summary.html',{'products':products,'quantities':quantities})
+    return render(request,'cart_summary.html',{'products':products,'quantities':quantities,'total_ordering':total_ordering})
 
 def cart_delete(request):
     cart = Cart(request)
