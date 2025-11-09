@@ -56,6 +56,11 @@
             {% endif %}
         {% endfor %}
       <button type="button" class="btn btn-primary quntityedit" data-index="{{ product.id }}">   ویرایش  </button>
+
+      <button type="button" class="btn btn-danger quntitydelete" data-index="{{ product.id }}">   حذف کالا  </button>
+
+
+
       <a href="{% url 'home' %}" class="btn btn-secondary">بازگشت به صفحه اصلی</a>
 
       </div>
@@ -68,7 +73,7 @@
 
 
 
-        <script>
+<script>
     $(document).on('click','.quntityedit',function (e)
     {
         e.preventDefault();
@@ -78,14 +83,39 @@
             url: '{% url 'cart_update' %}',
             data:{
                 product_id: productid,
-                product_qty:$('#select'+productid+' option:selected').text(),
+                 product_qty:$('#select'+productid+' option:selected').text(),
                 csrfmiddlewaretoken:'{{ csrf_token }}',
                 action:'post',
             },
             success:function (json){
                 console.log(json)
                 //document.getElementById('cart_quantity').textContent=json.qty
-                local.reload()
+                location.reload()
+            },
+            error:function (xhr,errmsg,err){}
+
+        });
+
+    });
+
+
+    $(document).on('click','.quntitydelete',function (e)
+    {
+        e.preventDefault();
+        var productid=$(this).data('index')
+        $.ajax({
+            type: 'POST',
+            url: '{% url 'cart_delete' %}',
+            data:{
+                product_id: productid,
+
+                csrfmiddlewaretoken:'{{ csrf_token }}',
+                action:'post',
+            },
+            success:function (json){
+                console.log(json)
+                //document.getElementById('cart_quantity').textContent=json.qty
+                location.reload()
             },
             error:function (xhr,errmsg,err){}
 
@@ -94,5 +124,9 @@
     });
 
     </script>
+
+
+
+
 
 {% endblock %}

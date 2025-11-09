@@ -40,3 +40,11 @@ class Cart:
 
         var=self.cart
         return var
+
+    def delete(self,product):
+        product_id=str(product.id)
+        if product_id in self.cart:
+            del self.cart[product_id]
+            self.session.modified = True
+        var=self.cart
+        return var
