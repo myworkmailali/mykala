@@ -6,7 +6,10 @@ from shop.models import Product
 from django.http import JsonResponse
 
 def cart_summary(request):
-    return render(request,'cart_summary.html',{})
+    cart=Cart(request)
+    products=cart.get_products()
+
+    return render(request,'cart_summary.html',{'products':products})
 
 def cart_delete(request):
     pass
