@@ -2,6 +2,7 @@ from pyexpat.errors import messages
 
 from django.shortcuts import render,redirect
 
+import cart.cart
 from .forms import SignupForm,ChangeProfileForm,ChangePasswordForm,UserInfoForm
 from .models import Product, Category
 from django.contrib.auth import authenticate,login,logout
@@ -9,7 +10,9 @@ from django.contrib import messages
 from django.db.models import Q
 from django.contrib.auth.models import User
 from .models import Profile
+import json
 
+from cart.cart import Cart
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 
@@ -31,6 +34,16 @@ def login_user(request):
         user=authenticate(request,username=username,password=password)
         if user is not None:
             login(request,user)
+            current_user=Profile.objects.get(user__id=user.id)
+            db_cart=current_user.old_cart
+            if db_cart:
+                db_cart=json.loads(db_cart)
+                cart=Cart(request)
+                for key,val in db_cart.items():
+                    cart.db_add(key,val)
+
+
+
             messages.success(request, 'شما با موفقیت وارد سامانه شدید')
             return redirect('home')
         else:
