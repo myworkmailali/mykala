@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from shop.models import Product
 
 class ShippingAddress(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)
@@ -18,3 +19,23 @@ class ShippingAddress(models.Model):
     class Meta:
         verbose_name = 'Shipping Address'
         verbose_name_plural = 'Shipping Addresses'
+
+class Order(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
+    full_name = models.CharField(max_length=250)
+    email=models.EmailField(max_length=250)
+    shipping_address_full_name=models.CharField(max_length=15000)
+    amount_paid=models.DecimalField(decimal_places=0,max_digits=10)
+    date_ordered=models.DateField(auto_now_add=True)
+    def __str__(self):
+        return f'Order form {self.id}'
+
+
+class OrderItems(models.Model):
+    order=models.ForeignKey(Order,on_delete=models.CASCADE,null=True,blank=True)
+    product=models.ForeignKey(Product,on_delete=models.CASCADE,null=True,blank=True)
+    user=models.ForeignKey(User,on_delete=models.CASCADE,null=True)
+    quantity=models.PositiveIntegerField(default=1)
+    price=models.DecimalField(decimal_places=0,max_digits=10)
+    def __str__(self):
+        return f'Order items form {self.id}'
