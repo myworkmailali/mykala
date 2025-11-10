@@ -12,6 +12,9 @@ from django.contrib.auth.models import User
 from .models import Profile
 import json
 
+from payment.forms import  ShippingAddressForm
+from payment.models import ShippingAddress
+
 from cart.cart import Cart
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
@@ -95,14 +98,16 @@ def update_profile(request):
 def user_info(request):
     if request.user.is_authenticated:
         current_user=Profile.objects.get(user__id=request.user.id)
-        #current_user = User.objects.get(id=request.user.id)
+        current_shipping_user=ShippingAddress.objects.get(user__id=request.user.id)
         user_form = UserInfoForm(request.POST or None, instance=current_user)
-        if user_form.is_valid():
+        shipping_form=ShippingAddressForm(request.POST or None,instance=current_shipping_user)
+        if user_form.is_valid() or shipping_form.is_valid():
             user_form.save()
+            shipping_form.save()
 
             messages.success(request, 'اطلاعات کاربری شما ویرایش شد')
             return redirect('home')
-        return render(request, 'user_info.html', {'form': user_form})
+        return render(request, 'user_info.html', {'form': user_form,'shipping_form':shipping_form})
 
     else:
         messages.success(request, 'مشکلی در ویرایش اطلاعات کاربری شما وجود دارد')

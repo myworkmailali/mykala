@@ -134,6 +134,7 @@ class ChangePasswordForm(SetPasswordForm):
         fields = ('new_password1', 'new_password2')
 
 class UserInfoForm(forms.ModelForm):
+
     address = forms.CharField(  label='',
         max_length=100,
         required=False,
