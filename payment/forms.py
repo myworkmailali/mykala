@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django import forms
 from .models import ShippingAddress
 class ShippingAddressForm(forms.ModelForm):
-    shippin_address_full_name = forms.CharField(label='',
+    shipping_address_full_name = forms.CharField(label='',
                               max_length=100,
                               required=False,
                               widget=forms.TextInput(attrs={
@@ -54,6 +54,6 @@ class ShippingAddressForm(forms.ModelForm):
 
     class Meta:
         model = ShippingAddress
-        fields = ('shippin_address_full_name', 'shipping_address_address','shipping_address_city','shipping_address_phone','shipping_address_state','shipping_address_country','shipping_address_zipcode',
+        fields = ('shipping_address_full_name', 'shipping_address_address','shipping_address_city','shipping_address_phone','shipping_address_state','shipping_address_country','shipping_address_zipcode',
                   'shipping_address_phone','shipping_address_country'
                   )

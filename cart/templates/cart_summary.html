@@ -73,7 +73,7 @@
 <br/>
 <div class="container " >
 {% if total_ordering %}
-<h1 class="display-6 " >مجموع کل سفارشات  {{ total_ordering|intcomma }} تومان</h1>
+    <a href="{% url 'checkout' %}" class="btn btn-sm btn-outline-secondary">صورت حساب</a>
 {% endif %}
 </div>
     <br/>

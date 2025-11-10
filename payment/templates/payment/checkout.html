@@ -1,0 +1,91 @@
+
+{% extends  'base.html' %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+
+<header class="bg-dark py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">صورتحساب</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">لطفا صورتحساب خربد خود را بررسی کنید</p>
+                </div>
+            </div>
+        </header>
+
+       <div class="container">
+        <div class="row">
+
+            <div class="col-10">
+            <center>
+
+
+
+
+<br/><br/><br/>
+    <table class="table table-striped ">
+  <thead>
+    <tr>
+      <th scope="col">عنوان کالا</th>
+      <th scope="col">قیمت کالا</th>
+      <th scope="col">تعداد</th>
+
+    </tr>
+  </thead>
+  <tbody class="table-group-divider">
+  {% for product in products %}
+    <tr>
+      <th scope="row">{{ product.name }}</th>
+
+     {% if product.is_sale %}
+          <td><strike>{{ product.price | intcomma}}</strike> {{ product.seal_price  | intcomma}}</td>
+      {% else %}
+    <td>{{ product.price | intcomma }}</td>
+  {% endif %}
+
+
+
+
+      <td> {% for key,val in quantities.items %}
+            {% if key == product.id|slugify %}
+               {{ val }}
+            {% endif %}
+        {% endfor %}</td>
+
+    </tr>
+
+{% endfor %}
+  </tbody>
+
+
+</table>
+<br>
+            <h4>جمع پرداختی <span class="badge text-bg-secondary">  {{ total_ordering|intcomma}}</span>
+            <a href="{% url 'cart_summary' %}" class="btn btn-sm btn-primary btn-warning">ویرایش سبد خرید</a>
+</h4>
+<br/><br/>
+<div class="card">
+  <div class="card-header">
+    آدرس پستی برای ارسال محصول خرید
+  </div>
+  <div class="card-body">
+    <form method="post" action="{% url 'checkout' %}">
+        {% csrf_token %}
+        {{ shipping_form.as_p }}
+        <button type="submit" class="btn btn-sm btn-success"> تایید </button>
+    </form>
+  </div>
+</div>
+
+
+
+
+
+ </center>
+            </div>
+        </div>
+       </div>
+<br/><br/>
+
+
+{% endblock %}
