@@ -9,7 +9,21 @@
 
                         {% if user.is_authenticated %}
                                  <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">خارج شوید</a></li>
-                                <li class="nav-item"><a class="nav-link" href="{% url 'profile' %}">پروفایل</a></li>
+
+                              <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">کاربری</a>
+
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item"  href="{% url 'profile' %}">پروفایل کاربر</a></li>
+                                 <li><a class="dropdown-item" href="{% url 'user_info' %}">اطلاعات کاربر</a></li>
+
+                            </ul>
+                        </li>
+
+
+
+
+
 
                         {% else %}
 

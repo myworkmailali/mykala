@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm,UserChangeForm,SetPasswordForm
 from django import forms
-
+from .models import Profile
 
 class SignupForm(UserCreationForm):
     first_name = forms.CharField(
@@ -132,3 +132,51 @@ class ChangePasswordForm(SetPasswordForm):
     class Meta:
         model = User
         fields = ('new_password1', 'new_password2')
+
+class UserInfoForm(forms.ModelForm):
+    address = forms.CharField(  label='',
+        max_length=100,
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder':'آدرس منزل'
+        }))
+    city = forms.CharField(  label='',
+        max_length=100,
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder':'آدرس محل کار'
+        }))
+    state = forms.CharField(  label='',
+        max_length=100,
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder':'نام استان'
+        }))
+    zipcode = forms.CharField( label='',
+        max_length=100,
+        required = False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder':'کد پستی'
+        }))
+    phone = forms.CharField(  label='',
+        max_length=100,
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder':'شماره تلفن'
+        }))
+    country = forms.CharField(  label='',
+        max_length=100,
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder':'کشور'
+        }))
+
+    class Meta:
+        model = Profile
+        fields = ('address', 'city', 'state', 'zipcode', 'phone', 'country')
