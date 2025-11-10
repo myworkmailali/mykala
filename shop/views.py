@@ -6,7 +6,7 @@ from .forms import SignupForm,ChangeProfileForm,ChangePasswordForm,UserInfoForm
 from .models import Product, Category
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
-
+from django.db.models import Q
 from django.contrib.auth.models import User
 from .models import Profile
 
@@ -137,4 +137,14 @@ def category(request,cat):
 def category_summary(request):
     allcats=Category.objects.all()
     return render(request,'category_summary.html',{'allcats':allcats})
-    pass
+
+def search(request):
+    if request.method == "POST":
+        searched=request.POST.get('searched')
+        if(searched):
+            searched=Product.objects.filter(Q(name__icontains=searched)|Q(description__icontains=searched))
+            if searched:
+                return render(request, 'search.html', {'searched': searched})
+
+    return render(request,'search.html',{})
+

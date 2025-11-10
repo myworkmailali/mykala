@@ -14,7 +14,7 @@ urlpatterns = [
     path('profile/',views.update_profile,name='profile'),
     path('update_password/',views.update_password,name='update_password'),
     path('user_info/',views.user_info,name='user_info'),
-
+    path('search/',views.search,name='search'),
     path('product/<int:pk>',views.product,name='product'),
     path('category/<str:cat>',views.category,name='category'),
     path('category_summary/', views.category_summary, name='category_summary'),
