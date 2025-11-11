@@ -10,6 +10,7 @@ from django.contrib import messages
 from django.db.models import Q
 from django.contrib.auth.models import User
 from .models import Profile
+from payment.models import Order
 import json
 
 from payment.forms import  ShippingAddressForm
@@ -165,4 +166,16 @@ def search(request):
                 return render(request, 'search.html', {'searched': searched})
 
     return render(request,'search.html',{})
+
+def user_orders(request):
+    if request.user.is_authenticated:
+        delivered_orders=Order.objects.filter(user=request.user,order_status='delivered')
+        current_orders=Order.objects.filter(user=request.user).exclude(order_status='delivered')
+
+        context = {'delivered_orders':delivered_orders,'current_orders':current_orders}
+        return render(request,'user_orders.html',context)
+    else:
+        messages.success(request, 'شما دسترسی به این صفحه ندارید')
+        return redirect('home')
+
 

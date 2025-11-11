@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+
+<!-- Header-->
+{% block content %}
+
+
+    <div class="container">
+        <div class="row">
+
+            <div class="col-10">
+                <center>
+                 <br/>
+            <br/>
+    <h3> سفارشات جاری</h3>
+
+    {% if current_orders %}
+   <table class="table">
+  <thead class="table-dark">
+    <tr>
+      <th scope="col">شماره سفارش</th>
+      <th scope="col">تحویل گیرنده</th>
+      <th scope="col">آدرس</th>
+      <th scope="col">وضعیت</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    {% for order in current_orders %}
+    <tr>
+      <th scope="row">{{ order.id }}</th>
+      <td>{{ order.full_name }}</td>
+      <td>{{ order.shipping_address_full_name }}</td>
+      <td>{{ order.get_order_status_display }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+   </table>
+        {% else %}سفارش جاری وجود ندارد
+{% endif %}
+                <br/>
+                <hr/>
+                <br/>
+                    <h3> سفارشات تحویل شده</h3>
+
+    {% if delivered_orders %}
+   <table class="table">
+  <thead class="table-dark">
+    <tr>
+      <th scope="col">شماره سفارش</th>
+      <th scope="col">تحویل گیرنده</th>
+      <th scope="col">آدرس</th>
+      <th scope="col">وضعیت</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    {% for order in delivered_orders %}
+    <tr>
+      <th scope="row">{{ order.id }}</th>
+      <td>{{ order.full_name }}</td>
+      <td>{{ order.shipping_address_full_name }}</td>
+      <td>{{ order.get_order_status_display }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+               </table>
+         {% else %}سفارش تحویلی وجود ندارد
+{% endif %}
+
+
+
+
+
+                <br/>
+                    </center>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
