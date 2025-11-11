@@ -86,6 +86,9 @@ def order_process(request):
                             price=price,
                         )
                         order_items.save()
+            for key in list(request.session.keys()):
+                if key == 'session_key':
+                    del request.session[key]
 
             messages.success(request, 'سفارش شما با موفقیت ثبت شد')
             return redirect('home')
@@ -115,7 +118,9 @@ def order_process(request):
                             price=price,
                         )
                         order_items.save()
-
+            for key in list(request.session.keys()):
+                if key == 'session_key':
+                    del request.session[key]
             messages.success(request, 'سفارش شما با موفقیت ثبت شد')
             return redirect('home')
 
