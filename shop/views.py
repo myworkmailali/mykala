@@ -10,7 +10,7 @@ from django.contrib import messages
 from django.db.models import Q
 from django.contrib.auth.models import User
 from .models import Profile
-from payment.models import Order
+from payment.models import Order,OrderItems
 import json
 
 from payment.forms import  ShippingAddressForm
@@ -179,3 +179,14 @@ def user_orders(request):
         return redirect('home')
 
 
+def orders_details(request,pk):
+    if request.user.is_authenticated:
+
+        order=Order.objects.get(id=pk)
+        items = OrderItems.objects.filter(order=order)
+        context={'order':order,'items':items}
+
+        return render(request,'orders_details.html',context)
+    else:
+        messages.success(request, 'شما دسترسی به این صفحه ندارید')
+        return redirect('home')

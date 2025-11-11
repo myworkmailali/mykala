@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+
+<!-- Header-->
+{% block content %}
+   <div class="container">
+        <div class="row">
+
+            <div class="col-10">
+                <center>
+                <div class="card">
+                      <div class="card-header">
+                        سفارش -  {{ order.id }} برای {{ order.full_name }}
+                      </div>
+                        {% for item in items %}
+                            {{ item.product }} | {{ item.price |intcomma}} | {{ item.quantity }} | {{ order.date_ordered | date:"Y/M/d H:m:s" }} | {{ order.amount_paid | intcomma }}
+                        {% endfor %}
+                        <a href="{% url 'user_orders' %}" class="btn btn-primary">بازگشت به سفارش</a>
+                      </div>
+                    </div>
+
+
+                    </center>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

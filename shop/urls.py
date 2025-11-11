@@ -19,4 +19,6 @@ urlpatterns = [
     path('category/<str:cat>',views.category,name='category'),
     path('category_summary/', views.category_summary, name='category_summary'),
     path('orders/', views.user_orders, name='user_orders'),
+    path('orders_details/<int:pk>', views.orders_details, name='orders_details'),
+
 ]
