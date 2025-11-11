@@ -5,7 +5,7 @@ from cart.cart import Cart
 from payment.forms import  ShippingAddressForm
 from payment.models import ShippingAddress
 from django.contrib import messages
-
+from shop.models import Profile
 from .models import Order,OrderItems,Product
 def payment_success(request):
     return render(request,'payment/payment_success.html',{})
@@ -89,7 +89,9 @@ def order_process(request):
             for key in list(request.session.keys()):
                 if key == 'session_key':
                     del request.session[key]
-
+            cu=Profile.objects.get(user__id=request.user.id)
+            cu.old_cart=''
+            cu.save()
             messages.success(request, 'سفارش شما با موفقیت ثبت شد')
             return redirect('home')
         else:
