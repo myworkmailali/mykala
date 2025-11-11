@@ -1,12 +1,12 @@
 from datetime import timezone
 
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from cart.cart import Cart
 from payment.forms import  ShippingAddressForm
 from payment.models import ShippingAddress
 from django.contrib import messages
 
-from .models import Order
+from .models import Order,OrderItems,Product
 def payment_success(request):
     return render(request,'payment/payment_success.html',{})
 
@@ -66,6 +66,27 @@ def order_process(request):
                 amount_paid=total_ordering,
             )
             new_order.save()
+
+            order_id = get_object_or_404(Order, pk=new_order.pk)
+            for product in products:
+                prod = get_object_or_404(Product, id=product.id)
+
+                if prod.is_sale:
+                    price = prod.seal_price
+                else:
+                    price = prod.price
+
+                for key, value in quantities.items():
+                    if int(key) == prod.id:
+                        order_items = OrderItems(
+                            user=shipping_user,
+                            order=order_id,
+                            product=prod,
+                            quantity=value,
+                            price=price,
+                        )
+                        order_items.save()
+
             messages.success(request, 'سفارش شما با موفقیت ثبت شد')
             return redirect('home')
         else:
@@ -75,6 +96,26 @@ def order_process(request):
                 amount_paid=total_ordering,
             )
             new_order.save()
+
+            order_id=get_object_or_404(Order,pk=new_order.pk)
+            for product in products:
+                prod=get_object_or_404(Product,id=product.id)
+
+                if prod.is_sale:
+                    price=prod.seal_price
+                else:
+                    price=prod.price
+
+                for key, value in quantities.items():
+                    if int(key)==prod.id:
+                        order_items = OrderItems(
+                            order=order_id,
+                            product=prod,
+                            quantity=value,
+                            price=price,
+                        )
+                        order_items.save()
+
             messages.success(request, 'سفارش شما با موفقیت ثبت شد')
             return redirect('home')
 
