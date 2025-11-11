@@ -7,8 +7,8 @@
 <header class="bg-dark py-5">
             <div class="container px-4 px-lg-5 my-5">
                 <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder">صورتحساب</h1>
-                    <p class="lead fw-normal text-white-50 mb-0">لطفا صورتحساب خربد خود را بررسی کنید</p>
+                    <h1 class="display-4 fw-bolder">بررسی نهایی صورت حساب</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">لطفا صورتحساب خربد خود را مجددا بررسی کنید</p>
                 </div>
             </div>
         </header>
@@ -67,15 +67,22 @@
 <div class="card">
   <div class="card-header">
     آدرس پستی برای ارسال محصول خرید
+
   </div>
   <div class="card-body">
-    <form method="post" action="{% url 'order_confirm' %}">
-        {% csrf_token %}
-        {{ shipping_form.as_p }}
-        <button type="submit" class="btn btn-sm btn-success"> ادامه سفارش </button>
-    </form>
+      نام تحویل گیرنده:     {{ shipping_info.shipping_address_full_name}}<br/>
+
+      آدرس: {{ shipping_info.shipping_address_ }}<br/>
+      شهر: {{ shipping_info.shipping_address_city }}<br/>
+      تلفن: {{ shipping_info.shipping_address_phone }}<br/>
+      استان: {{ shipping_info.shipping_address_state }}<br/>
+      کشور: {{ shipping_info.shipping_address_country }}<br/>
+      کدپستی: {{ shipping_info.shipping_address_zipcode }}<br/>
   </div>
+
 </div>
+<br/>
+<button type="submit" class="btn btn-sm btn-outline-secondary">ثبت سفارش و پرداخت</button>
 
 
 
