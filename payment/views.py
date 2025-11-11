@@ -1,4 +1,4 @@
-
+from datetime import timezone
 
 from django.shortcuts import render,redirect
 from cart.cart import Cart
@@ -6,6 +6,7 @@ from payment.forms import  ShippingAddressForm
 from payment.models import ShippingAddress
 from django.contrib import messages
 
+from .models import Order
 def payment_success(request):
     return render(request,'payment/payment_success.html',{})
 
@@ -38,3 +39,46 @@ def order_confirm(request):
        return redirect('home')
     return render(request,'payment/order_confirm.html',{'products': products, 'quantities': quantities, 'total_ordering': total_ordering,'shipping_info':shipping_info})
 
+def order_process(request):
+    if request.method == 'POST':
+        shipping_info = request.session.get('shipping_info')
+        address=shipping_info['shipping_address_address']
+        city=shipping_info['shipping_address_city']
+        state=shipping_info['shipping_address_state']
+        country=shipping_info['shipping_address_country']
+        zipcode=shipping_info['shipping_address_zipcode']
+
+        cart = Cart(request)
+        products = cart.get_products()
+        quantities = cart.get_quantity()
+        total_ordering = cart.get_total()
+
+        full_name = shipping_info['shipping_address_full_name']
+        shipping_address_full_name =f'{city}\n {state} \n{country}\n {zipcode}\n{address}'
+
+        order_status = 'pending'
+        if request.user.is_authenticated:
+            shipping_user=request.user
+            new_order = Order(
+                user=shipping_user,
+                order_status=order_status,
+                shipping_address_full_name=shipping_address_full_name,
+                amount_paid=total_ordering,
+            )
+            new_order.save()
+            messages.success(request, 'سفارش شما با موفقیت ثبت شد')
+            return redirect('home')
+        else:
+            new_order = Order(
+                order_status=order_status,
+                shipping_address_full_name=shipping_address_full_name,
+                amount_paid=total_ordering,
+            )
+            new_order.save()
+            messages.success(request, 'سفارش شما با موفقیت ثبت شد')
+            return redirect('home')
+
+        return render(request,'payment/order_process.html',{'shipping_info':shipping_info})
+    else:
+        messages.success(request, 'شما دسترسی به این صفحه را ندارید')
+        return redirect('home')

@@ -28,12 +28,19 @@ def create_shipping(sender,instance,created,**kwargs):
 post_save.connect(create_shipping, sender=User)
 
 class Order(models.Model):
+    ORDER_STATUS_CHOICES = [
+            ('pending','آماده پرداخت'),
+            ('processing','درحال پردازش سفارش'),
+            ('shipping','ارسال به مشتری'),
+            ('delivered','تحویل به مشتری'),
+            ]
     user=models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
     full_name = models.CharField(max_length=250)
-    email=models.EmailField(max_length=250)
+    email=models.EmailField(max_length=250,blank=True)
     shipping_address_full_name=models.CharField(max_length=15000)
     amount_paid=models.DecimalField(decimal_places=0,max_digits=10)
     date_ordered=models.DateField(auto_now_add=True)
+    order_status=models.CharField(max_length=10, choices=ORDER_STATUS_CHOICES,default='pending')
     def __str__(self):
         return f'Order form {self.id}'
 

@@ -82,7 +82,11 @@
 
 </div>
 <br/>
-<button type="submit" class="btn btn-sm btn-outline-secondary">ثبت سفارش و پرداخت</button>
+<form action="{% url 'order_process' %}" method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-sm btn-outline-secondary">ثبت سفارش و پرداخت</button>
+
+</form>
 
 
 
