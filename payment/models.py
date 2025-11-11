@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from shop.models import Product
 from django.db.models.signals import post_save
+from django_jalali.db import models as jalali_models
+import jdatetime
 
 class ShippingAddress(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)
@@ -39,10 +41,18 @@ class Order(models.Model):
     email=models.EmailField(max_length=250,blank=True)
     shipping_address_full_name=models.CharField(max_length=15000)
     amount_paid=models.DecimalField(decimal_places=0,max_digits=10)
-    date_ordered=models.DateField(auto_now_add=True)
+    date_ordered=jalali_models.jDateTimeField(auto_now_add=True)
     order_status=models.CharField(max_length=10, choices=ORDER_STATUS_CHOICES,default='pending')
+    last_update=jalali_models.jDateTimeField(auto_now=True)
     def __str__(self):
         return f'Order form {self.id}'
+
+    def save(self,*args,**kwargs):
+        if(self.pk):
+            old_status=Order.objects.get(pk=self.pk).order_status
+            if self.order_status != old_status:
+                self.last_update=jdatetime.datetime.now()
+        super().save(*args,**kwargs)
 
 
 class OrderItems(models.Model):
@@ -53,3 +63,4 @@ class OrderItems(models.Model):
     price=models.DecimalField(decimal_places=0,max_digits=10)
     def __str__(self):
         return f'Order items form {self.id}'
+
