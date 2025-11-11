@@ -54,7 +54,7 @@ def order_process(request):
         total_ordering = cart.get_total()
 
         full_name = shipping_info['shipping_address_full_name']
-        shipping_address_full_name =f'{city}\n {state} \n{country}\n {zipcode}\n{address}'
+        shipping_address_full_name =f"{city}\n {state} \n{country}\n {zipcode}\n{address}"
 
         order_status = 'pending'
         if request.user.is_authenticated:
