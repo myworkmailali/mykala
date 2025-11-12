@@ -164,8 +164,21 @@ def search(request):
             searched=Product.objects.filter(Q(name__icontains=searched)|Q(description__icontains=searched))
             if searched:
                 return render(request, 'search.html', {'searched': searched})
-
     return render(request,'search.html',{})
+
+def search_quic(request):
+    if request.method == "POST":
+        searched=request.POST.get('searched')
+        if(searched):
+            searched=Product.objects.filter(Q(name__icontains=searched)|Q(description__icontains=searched))
+            #if searched:
+            return render(request, 'search_quic.html', {'searched': searched})
+        else:
+            messages.success(request, 'متن مورد نظر را جهت جستجو وارد کنید')
+            return redirect('home')
+    return render(request,'index.html',{})
+
+
 
 def user_orders(request):
     if request.user.is_authenticated:
