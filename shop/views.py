@@ -65,14 +65,20 @@ def signup_user(request):
     if request.method == "POST":
         form=SignupForm(request.POST)
         if form.is_valid:
-            form.save()
-            username = form.cleaned_data.get('username')
-            password1 = form.cleaned_data.get('password1')
+            try:
+                form.save()
+                username = form.cleaned_data.get('username')
+                password1 = form.cleaned_data.get('password1')
+                user = authenticate(request, username=username, password=password1)
+                login(request, user)
+                messages.success(request, 'اکانت شما ساخته شد')
+                return redirect('home')
+            except Exception as e:
+                messages.success(request, f'مشکلی وجود دارد {e}')
+                return redirect('signup')
 
-            user = authenticate(request,username=username,password=password1)
-            login(request,user)
-            messages.success(request,'اکانت شما ساخته شد')
-            return redirect('home')
+
+
         else:
             messages.success(request,'مشکلی در ثبت نام وجود دارد')
             return render('signup')
