@@ -15,7 +15,7 @@ SECRET_KEY = 'django-insecure-965_^ewm=v8xtp#w0gq0rttyxe2mnq2f&ooiy$0x-l4+yoto8!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['mykala.onrender.com']
 
 
 # Application definition
